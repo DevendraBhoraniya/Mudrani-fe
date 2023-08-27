@@ -6,7 +6,7 @@ import {
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import { optimismGoerli, zoraTestnet, polygonMumbai } from 'wagmi/chains';
+import { arbitrumGoerli } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { useEffect, useState } from 'react';
@@ -15,7 +15,7 @@ import { Chain } from '@wagmi/core';
 const PROJECT_ID = `${process.env.NEXT_PUBLIC_WALLET_PROJECT_ID}`;
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [optimismGoerli, zoraTestnet, polygonMumbai],
+  [arbitrumGoerli],
 
   [
     // alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
@@ -24,7 +24,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'Chad Vault',
+  appName: 'Mudrani Wallet',
   projectId: PROJECT_ID,
   chains,
 });
