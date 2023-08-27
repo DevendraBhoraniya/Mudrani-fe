@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import '@rainbow-me/rainbowkit/styles.css';
 
 import { Providers } from './provider';
+import Navbar from '@/components/Navbar';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          {/* <Navbar /> */}
+          <Navbar />
           <main>{children}</main>
           {/* <Footer /> */}
         </Providers>
