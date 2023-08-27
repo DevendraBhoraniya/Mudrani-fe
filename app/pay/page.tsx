@@ -1,12 +1,12 @@
-import Tabs from '@/components/Tab'
-import React from 'react'
+import Tabs from '@/components/Tab';
+import React from 'react';
 
-const page = () => {
+const Pay = () => {
   return (
-    <div className='mx-[10%]'>
+    <div className="mx-[10%]">
       <Tabs />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default Pay;
