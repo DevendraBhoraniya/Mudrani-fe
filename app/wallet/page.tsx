@@ -192,6 +192,36 @@ const Wallet = () => {
 
   // ENS Resolver
 
+  const resolveAddressOrName = async (input: any) => {
+    // Check if the input is an ENS name based on ".eth" extension
+    if (input.endsWith('.eth')) {
+      try {
+        const ensAddress = await ensClient.getEnsAddress({
+          name: normalize(input),
+        });
+        console.log(ensAddress, 'address');
+
+        return ensAddress;
+      } catch (error) {
+        throw new Error('Failed to resolve the ENS name');
+      }
+    } else {
+      // If it's not an ENS name, return the input as-is
+      // Ideally, you should also validate if it's a valid Ethereum address here
+      return input;
+    }
+  };
+
+  const handleAddressChange = async (e: any) => {
+    try {
+      const resolvedAddress = await resolveAddressOrName(e.target.value);
+      setRecipientAddress(resolvedAddress);
+    } catch (error) {
+      console.error(error);
+      // Handle the error (e.g., show a message to the user)
+    }
+  };
+
   // const { data } = useEnsResolver({
   //   name: 'wagmi-dev.eth',
   // });
@@ -208,7 +238,7 @@ const Wallet = () => {
   return (
     <>
       <div className="flex justify-center w-full">
-        <div className="border border-purple-600/[0.70] h-[300px] w-full p-5 mx-[13%] rounded-xl flex justify-center items-center ">
+        <div className="border border-purple-600/[0.70] h-fit w-full p-5 mx-[13%] rounded-xl flex justify-center items-center ">
           {isWalletCreated ? (
             <>
               <div className="flex flex-col justify-center items-center gap-5 ">
@@ -219,41 +249,50 @@ const Wallet = () => {
                   height={50}
                   width={50}
                 />
-
-                {/* Account Address */}
-                <p className="text-white font-medium">{addr}</p>
-                <button className="" onClick={handleCopy}>
-                  Copy
-                </button>
-
                 {/* Account Balance */}
                 <p className="text-gray-600">Balance: {bal} ETH</p>
 
-                {/* Send Token Fields */}
-                <div className="flex flex-col gap-2">
+                {/* Account Address */}
+                <div className="flex flex-wrap gap-3 items-center ">
+                  <p className="text-white font-medium">{addr}</p>
+                  <button
+                    className="p-2 bg-purple-600/[0.50] rounded-xl  "
+                    onClick={handleCopy}
+                  >
+                    {isCopied ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+
+                {/* Send Token Fields and buttons  */}
+
+                {/* Recievers Addess */}
+                <div className="flex flex-wrap gap-2 w-full">
                   <input
-                    className="bg-purple-600/[0.15] p-1 rounded-2xl"
+                    className="bg-purple-600/[0.15] pl-3 p-2 rounded-xl grow"
                     type="text"
                     placeholder="Recipient Address"
                     value={recipientAddress}
-                    onChange={(e) => setRecipientAddress(e.target.value)}
+                    onChange={handleAddressChange}
                   />
-                  <input
-                    className="bg-purple-600/[0.15] p-1 rounded-2xl"
-                    type="number"
-                    placeholder="Amount"
-                    value={tokenAmount}
-                    onChange={(e) => setTokenAmount(e.target.value)}
-                  />
-                </div>
 
-                {/* Send Token Button */}
-                <button
-                  className="bg-purple-600/[0.40] p-2 rounded-md"
-                  onClick={sendTx}
-                >
-                  Send Tokens
-                </button>
+                  {/* Amount And Send Token Buttonn */}
+                  <div className="flex flex-wrap gap-4 w-full">
+                    <input
+                      className="bg-purple-600/[0.15] pl-3 p-2 rounded-xl grow "
+                      type="number"
+                      placeholder="Amount"
+                      value={tokenAmount}
+                      onChange={(e) => setTokenAmount(e.target.value)}
+                    />
+                  </div>
+                  {/* Send Token Button */}
+                  <button
+                    className="bg-purple-600/[0.40] p-2 rounded-xl w-full"
+                    onClick={sendTx}
+                  >
+                    Send Tokens
+                  </button>
+                </div>
               </div>
             </>
           ) : (
