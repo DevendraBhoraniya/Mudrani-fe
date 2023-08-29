@@ -32,6 +32,9 @@ const Navbar = () => {
             <Link href="/bridge" className="hover:text-purple-400/[0.70]">
               Bridge
             </Link>
+            <Link href="/union" className="hover:text-purple-400/[0.70]">
+              Union Data
+            </Link>
           </div>
         </div>
         <div className="wallet md:block hidden">
